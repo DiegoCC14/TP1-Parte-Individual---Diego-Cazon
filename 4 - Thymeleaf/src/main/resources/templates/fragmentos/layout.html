@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:fragment="head-recursos(tituloPagina)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${tituloPagina} + ' | Ferretería'">Ferretería</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Estilos CSS -->
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<!-- Fragmento: Encabezado con Navegación -->
+<header class="encabezado" th:fragment="encabezado">
+    <div class="contenedor encabezado-contenido">
+        <div class="logo-seccion">
+            <div class="logo-icono">🛠️</div>
+            <div>
+                <h1 class="logo-titulo">Ferretería TodoCode</h1>
+                <p class="logo-subtitulo">Sistema de Gestión de Herramientas y Productos</p>
+            </div>
+        </div>
+        <nav class="navegacion">
+            <a th:href="@{/productos}" class="nav-enlace" id="nav-listado">📋 Catálogo</a>
+            <a th:href="@{/productos/nuevo}" class="nav-enlace nav-destacado" id="nav-nuevo">+ Nueva Herramienta</a>
+            <a th:href="@{/api/productos}" target="_blank" class="nav-enlace nav-api" id="nav-api">⚡ API REST (JSON)</a>
+        </nav>
+    </div>
+</header>
+
+<!-- Fragmento: Pie de Página -->
+<footer class="pie-pagina" th:fragment="pie">
+    <div class="contenedor pie-contenido">
+        <p>© 2026 <strong>Ferretería TodoCode</strong> — Trabajo Práctico con <em>Spring Boot &amp; Thymeleaf</em></p>
+        <p class="pie-subtexto">Arquitectura por Capas · Spring Data JPA · Motor de Vistas Thymeleaf</p>
+    </div>
+</footer>
+
+</body>
+</html>

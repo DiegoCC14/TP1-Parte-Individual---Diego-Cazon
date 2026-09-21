@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragmentos/layout :: head-recursos('Catálogo de Productos')}">
+    <meta charset="UTF-8">
+    <title>Catálogo de Productos | Ferretería</title>
+</head>
+<body>
+
+<!-- Encabezado reutilizable mediante fragmento -->
+<header th:replace="~{fragmentos/layout :: encabezado}"></header>
+
+<main class="contenedor principal">
+
+    <!-- Barra Superior de Acciones y Métricas -->
+    <section class="barra-superior">
+        <div>
+            <h2 class="titulo-seccion">Catálogo de Herramientas</h2>
+            <p class="subtitulo-seccion">Listado actualizado de inventario disponible en la ferretería.</p>
+        </div>
+        <div class="acciones-superiores">
+            <a th:href="@{/productos/nuevo}" class="boton boton-principal" id="btn-nuevo-producto">
+                <span class="icono">+</span> Nueva Herramienta
+            </a>
+        </div>
+    </section>
+
+    <!-- Resumen rápido de métricas -->
+    <section class="metricas-grilla" th:if="${!productos.isEmpty()}">
+        <div class="tarjeta metrica-card">
+            <span class="metrica-icono">📦</span>
+            <div>
+                <span class="metrica-valor" th:text="${productos.size()}">0</span>
+                <span class="metrica-etiqueta">Herramientas registradas</span>
+            </div>
+        </div>
+        <div class="tarjeta metrica-card">
+            <span class="metrica-icono">🏷️</span>
+            <div>
+                <span class="metrica-valor" th:text="${#aggregates.sum(productos.![stock])}">0</span>
+                <span class="metrica-etiqueta">Unidades en stock total</span>
+            </div>
+        </div>
+        <div class="tarjeta metrica-card">
+            <span class="metrica-icono">💼</span>
+            <div>
+                <span class="metrica-valor">API REST Activa</span>
+                <span class="metrica-etiqueta">JSON bajo /api/productos</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tabla Principal de Productos -->
+    <section class="tarjeta contenedor-tabla" th:if="${!productos.isEmpty()}">
+        <div class="tabla-responsive">
+            <table class="tabla-productos">
+                <thead>
+                    <tr>
+                        <th class="col-codigo">Cód.</th>
+                        <th>Nombre</th>
+                        <th>Marca</th>
+                        <th>Categoría</th>
+                        <th class="col-precio">Precio</th>
+                        <th class="col-stock">Stock</th>
+                        <th>Descripción</th>
+                        <th class="col-acciones">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="producto : ${productos}">
+                        <td class="col-codigo">
+                            <span class="badge-codigo" th:text="'#' + ${producto.codProducto}">#1</span>
+                        </td>
+                        <td class="nombre-producto">
+                            <strong th:text="${producto.nombre}">Taladro Percutor</strong>
+                        </td>
+                        <td>
+                            <span class="badge-marca" th:text="${producto.marca}">Bosch</span>
+                        </td>
+                        <td>
+                            <span class="badge-categoria" th:text="${producto.categoria}">Herramientas Eléctricas</span>
+                        </td>
+                        <td class="col-precio">
+                            <strong class="precio-valor" th:text="'$' + ${#numbers.formatDecimal(producto.precio, 1, 'POINT', 2, 'COMMA')}">$0.00</strong>
+                        </td>
+                        <td class="col-stock">
+                            <!-- Badges de stock según la cantidad -->
+                            <span th:if="${producto.stock == 0}" class="badge-stock badge-stock-cero">Agotado</span>
+                            <span th:if="${producto.stock > 0 and producto.stock <= 5}" class="badge-stock badge-stock-bajo" th:text="${producto.stock} + ' un.'">3 un.</span>
+                            <span th:if="${producto.stock > 5}" class="badge-stock badge-stock-ok" th:text="${producto.stock} + ' un.'">15 un.</span>
+                        </td>
+                        <td class="descripcion-producto" th:text="${producto.descripcion}">Descripción del producto</td>
+                        <td class="acciones">
+                            <a class="boton boton-editar"
+                               title="Editar herramienta"
+                               th:href="@{/productos/editar/{codProd}(codProd=${producto.codProducto})}">
+                                ✏️ Editar
+                            </a>
+
+                            <form th:action="@{/productos/eliminar/{codProd}(codProd=${producto.codProducto})}"
+                                  method="post"
+                                  onsubmit="return confirm('¿Estás seguro de que deseas eliminar este producto?')">
+                                <button type="submit" class="boton boton-eliminar" title="Eliminar herramienta">
+                                    🗑️ Eliminar
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Estado vacío si no hay productos -->
+    <section class="tarjeta estado-vacio" th:if="${productos.isEmpty()}">
+        <div class="icono-vacio">📦</div>
+        <h3>No hay herramientas registradas</h3>
+        <p>El inventario de la ferretería se encuentra vacío en este momento.</p>
+        <a th:href="@{/productos/nuevo}" class="boton boton-principal">
+            + Registrar la primera herramienta
+        </a>
+    </section>
+
+</main>
+
+<!-- Pie de página reutilizable -->
+<footer th:replace="~{fragmentos/layout :: pie}"></footer>
+
+</body>
+</html>

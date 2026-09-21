@@ -1,0 +1,10 @@
+persistencia\CarreraJpaController.class
+persistencia\MateriaJpaController.class
+logica\Carrera.class
+logica\JpaPrueba.class
+logica\Materia.class
+persistencia\exceptions\NonexistentEntityException.class
+logica\Alumno.class
+persistencia\AlumnoJpaController.class
+persistencia\ControladoraPersistencia.class
+logica\Controladora.class

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragmentos/layout :: head-recursos(${titulo})}">
+    <meta charset="UTF-8">
+    <title>Formulario de Herramienta | Ferretería</title>
+</head>
+<body>
+
+<!-- Encabezado reutilizable -->
+<header th:replace="~{fragmentos/layout :: encabezado}"></header>
+
+<main class="contenedor principal">
+
+    <section class="tarjeta contenedor-formulario">
+
+        <!-- Barra superior del formulario -->
+        <div class="formulario-encabezado">
+            <div>
+                <h2 class="titulo-formulario" th:text="${titulo}">Registrar Producto</h2>
+                <p class="subtitulo-formulario">Ingresá los datos técnicos, categoría y valores de stock de la herramienta.</p>
+            </div>
+            <a class="boton boton-secundario" th:href="@{/productos}">
+                ← Volver al Catálogo
+            </a>
+        </div>
+
+        <!-- Alerta de validación o error -->
+        <div class="mensaje-alerta mensaje-error" th:if="${error != null}">
+            <span class="alerta-icono">⚠️</span>
+            <div class="alerta-texto" th:text="${error}">
+                Hubo un error en los datos ingresados.
+            </div>
+        </div>
+
+        <!-- Formulario con th:object y th:field -->
+        <form th:action="@{/productos/crear}"
+              th:object="${producto}"
+              method="post"
+              class="formulario-grid">
+
+            <!-- Campo oculto para el ID en caso de edición -->
+            <input type="hidden" th:field="*{codProducto}" id="codProducto">
+
+            <div class="grilla-campos">
+
+                <!-- Nombre -->
+                <div class="campo">
+                    <label for="nombre">Nombre de la Herramienta <span class="requerido">*</span></label>
+                    <input id="nombre"
+                           type="text"
+                           placeholder="Ej: Taladro Percutor 650W"
+                           required
+                           th:field="*{nombre}">
+                </div>
+
+                <!-- Marca -->
+                <div class="campo">
+                    <label for="marca">Marca / Fabricante <span class="requerido">*</span></label>
+                    <input id="marca"
+                           type="text"
+                           placeholder="Ej: Bosch, DeWalt, Stanley"
+                           required
+                           th:field="*{marca}">
+                </div>
+
+                <!-- Categoría -->
+                <div class="campo">
+                    <label for="categoria">Categoría <span class="requerido">*</span></label>
+                    <input id="categoria"
+                           type="text"
+                           placeholder="Ej: Herramientas Eléctricas, Manuales, Medición"
+                           required
+                           th:field="*{categoria}">
+                </div>
+
+                <!-- Precio -->
+                <div class="campo">
+                    <label for="precio">Precio Unitario ($) <span class="requerido">*</span></label>
+                    <input id="precio"
+                           type="number"
+                           step="0.01"
+                           min="0.01"
+                           placeholder="0.00"
+                           required
+                           th:field="*{precio}">
+                </div>
+
+                <!-- Stock -->
+                <div class="campo">
+                    <label for="stock">Cantidad en Stock <span class="requerido">*</span></label>
+                    <input id="stock"
+                           type="number"
+                           min="0"
+                           placeholder="0"
+                           required
+                           th:field="*{stock}">
+                </div>
+
+                <!-- Descripción (ancho completo) -->
+                <div class="campo campo-completo">
+                    <label for="descripcion">Descripción Técnica y Detalles</label>
+                    <textarea id="descripcion"
+                              rows="4"
+                              placeholder="Detalles sobre potencia, accesorios incluidos, garantía o especificaciones técnicas..."
+                              th:field="*{descripcion}"></textarea>
+                </div>
+
+            </div>
+
+            <!-- Botones de Acción -->
+            <div class="formulario-acciones">
+                <button type="submit" class="boton boton-principal boton-lg" id="btn-guardar">
+                    💾 Guardar Herramienta
+                </button>
+                <a th:href="@{/productos}" class="boton boton-secundario boton-lg">
+                    Cancelar
+                </a>
+            </div>
+
+        </form>
+
+    </section>
+
+</main>
+
+<!-- Pie de página reutilizable -->
+<footer th:replace="~{fragmentos/layout :: pie}"></footer>
+
+</body>
+</html>
